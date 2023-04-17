@@ -368,7 +368,7 @@ class NCGCF(object):
 
             # E^(k + 1) = LeakyReLU(W_1 * (L * E^(k)) + b_1) + LeakyReLU(W_2 * (E^(k) ⊙ (L * E^(k))) + b_2)
             ego_embeddings = sum_embeddings + bi_embeddings
-            ego_embeddings = tf.nn.dropout(ego_embeddings, 1 - self.mess_dropout[k]) # dropout
+            # ego_embeddings = tf.nn.dropout(ego_embeddings, 1 - self.mess_dropout[k]) # dropout
             norm_embeddings = tf.math.l2_normalize(ego_embeddings, axis=1) # l2正则化
             all_embeddings += [norm_embeddings]
 
@@ -425,7 +425,7 @@ class NCGCF(object):
 
             # W_mlp * (LeakyReLU(W * (L * E^(k)) + b)) + b_mlp
             mlp_embeddings = tf.matmul(embeddings, self.weights['W_mlp_%d' % k]) + self.weights['b_mlp_%d' % k]
-            mlp_embeddings = tf.nn.dropout(mlp_embeddings, 1 - self.mess_dropout[k]) # dropout
+            # mlp_embeddings = tf.nn.dropout(mlp_embeddings, 1 - self.mess_dropout[k]) # dropout
             all_embeddings += [mlp_embeddings]
 
         # [[eu_0^(1)-eu_0^(2)-...-eu_0^(n_layers)],...,[ei_N^(1)-ei_N^(2)-...-ei_N^(n_layers)]]
