@@ -18,7 +18,7 @@ def parse_args():
                         help='Project path.')
 
     parser.add_argument('--dataset', nargs='?', default='mini_gowalla', # 数据集
-                        help='Choose a dataset from {mini_gowalla, gowalla, yelp2018, amazon-book}')
+                        help='Choose a dataset from {mini_gowalla, mini_yelp2018, mini_amazon-book, gowalla, yelp2018, amazon-book}')
     parser.add_argument('--pretrain', type=int, default=0, # 预训练
                         help='0: No pretrain, -1: Pretrain with the learned embeddings, 1:Pretrain with stored models.')
     parser.add_argument('--verbose', type=int, default=1, # 打印loss间隔
@@ -42,7 +42,7 @@ def parse_args():
     parser.add_argument('--regs', nargs='?', default='[1e-5,1e-3,1e-1]', # 正则项系数
                         help='Regularizations.')
 
-    parser.add_argument('--SN_NCL', nargs='?', default=0, # 是否使用SN-NCL损失
+    parser.add_argument('--SN_NCL', nargs='?', default=1, # 是否使用SN-NCL损失
                         help='Whether to use SN-NCL loss.')
     parser.add_argument('--weight_sn_ncl', nargs='?', default=1e-5, # SN-NCL损失系数
                         help='Coefficient of SN-NCL loss.')
@@ -50,10 +50,10 @@ def parse_args():
                         help='Coefficient of user and project loss ratio.')
     parser.add_argument('--sn_ncl_beta', nargs='?', default=1.0,  # 调节负采样中正负例的权重
                         help='Weight of positive and negative case losses in negative sampling.')
-    parser.add_argument('--sn_ncl_neg_num', nargs='?', default=10,  # 负采样中负例的数量
+    parser.add_argument('--sn_ncl_neg_num', nargs='?', default=5,  # 负采样中负例的数量
                         help='Number of negative cases in a negative sample.')
 
-    parser.add_argument('--SN_CCL', nargs='?', default=0, # 是否使用SN-CCL损失
+    parser.add_argument('--SN_CCL', nargs='?', default=1, # 是否使用SN-CCL损失
                         help='Whether to use SN-CCL loss.')
     parser.add_argument('--k_user', nargs='?', default=100,  # 用户的聚类类别数量
                         help='Number of clustering categories of users.')
@@ -72,7 +72,7 @@ def parse_args():
                         help='Specify the name of model (ncgcf).')
     parser.add_argument('--adj_type', nargs='?', default='norm', # 邻接矩阵(拉普拉斯矩阵)的类型
                         help='Specify the type of the adjacency (laplacian) matrix from {plain, norm, mean}.')
-    parser.add_argument('--alg_type', nargs='?', default='lightgcn', # 图卷积层选择(图滤波)
+    parser.add_argument('--alg_type', nargs='?', default='ncgcf', # 图卷积层选择(图滤波)
                         help='Specify the type of the graph convolutional layer from {ncgcf, lightgcn, ngcf, gcn, gcmc}.')
 
     parser.add_argument('--node_dropout_flag', type=int, default=0, # 点的dropout是否激活

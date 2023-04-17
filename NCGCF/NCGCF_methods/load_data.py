@@ -96,7 +96,7 @@ class Data(object):
             print('already load adj matrix', adj_mat.shape, time() - t1) # 加载邻接矩阵
 
         except Exception:
-            adj_mat, norm_adj_mat, mean_adj_mat = self.create_adj_mat() # 创建邻接矩阵
+            adj_mat, norm_adj_mat, mean_adj_mat, SecondOrder_adj_mat = self.create_adj_mat() # 创建邻接矩阵
             sp.save_npz(self.path + '/s_adj_mat.npz', adj_mat) # 使用npz格式保存稀疏矩阵文件
             sp.save_npz(self.path + '/s_norm_adj_mat.npz', norm_adj_mat)
             sp.save_npz(self.path + '/s_mean_adj_mat.npz', mean_adj_mat)
@@ -124,6 +124,7 @@ class Data(object):
 
             norm_adj = d_mat_inv.dot(adj) # 矩阵乘法
             # norm_adj = adj.dot(d_mat_inv)
+
             print('generate single-normalized adjacency matrix.')
             return norm_adj.tocoo() # 将此矩阵转换为坐标格式
 
@@ -139,7 +140,8 @@ class Data(object):
         mean_adj_mat = normalized_adj_single(adj_mat)
 
         print('already normalize adjacency matrix', time() - t2)
-        return adj_mat.tocsr(), norm_adj_mat.tocsr(), mean_adj_mat.tocsr() # tocsr()将此矩阵转换为压缩稀疏行格式，重复的条目将被汇总在一起
+        return adj_mat.tocsr(), norm_adj_mat.tocsr(), mean_adj_mat.tocsr()
+        # tocsr()将此矩阵转换为压缩稀疏行格式，重复的条目将被汇总在一起
 
     def negative_pool(self): # 创建负样本集
         t1 = time()

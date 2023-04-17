@@ -40,6 +40,7 @@ def sn_ncl_negative_sample(u_embeddings_k, i_embeddings_k, u_embeddings_0, i_emb
     norm_user_k = u_embeddings_k
     norm_user_0 = u_embeddings_0
     pos_score_user = tf.math.log(tf.sigmoid(tf.reduce_sum(tf.multiply(norm_user_k, norm_user_0), axis=1)))  # tf.multiply()逐元素相乘, axis=1按列求和
+
     # all_score_user = tf.matmul(norm_user_k, norm_user_0, transpose_a=False, transpose_b=True)
     # neg_score_user = all_score_user - tf.matrix_diag(tf.diag_part(all_score_user))
     # neg_score_user = tf.math.log(tf.sigmoid(tf.negative(tf.reduce_sum(neg_score_user, axis=1))))

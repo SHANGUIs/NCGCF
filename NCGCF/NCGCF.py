@@ -104,6 +104,7 @@ class NCGCF(object):
             4. gcn:  defined in 'Semi-Supervised Classification with Graph Convolutional Networks', ICLR2018;
             5. gcmc: defined in 'Graph Convolutional Matrix Completion', KDD2018;
         """
+
         if self.alg_type in ['ncgcf']:
             self.ua_embeddings, self.ia_embeddings, self.all_u_embeddings_k, self.all_i_embeddings_k = self._create_ncgcf_embed()
 
@@ -274,6 +275,7 @@ class NCGCF(object):
     图滤波器函数。
     """
 
+
     def _create_ncgcf_embed(self):
         # L = D^(-1/2)AD^(-1/2)
         if self.node_dropout_flag:
@@ -306,6 +308,7 @@ class NCGCF(object):
         all_embeddings = tf.reduce_mean(all_embeddings, axis=1, keepdims=False)  # 最终节点表示，可改为加权求和
         u_g_embeddings, i_g_embeddings = tf.split(all_embeddings, [self.n_users, self.n_items], 0)
         return u_g_embeddings, i_g_embeddings, all_u_embeddings_k, all_i_embeddings_k
+
 
     def _create_lightgcn_embed(self):
         # L = D^(-1/2)AD^(-1/2)
@@ -365,7 +368,7 @@ class NCGCF(object):
 
             # E^(k + 1) = LeakyReLU(W_1 * (L * E^(k)) + b_1) + LeakyReLU(W_2 * (E^(k) ⊙ (L * E^(k))) + b_2)
             ego_embeddings = sum_embeddings + bi_embeddings
-            # ego_embeddings = tf.nn.dropout(ego_embeddings, 1 - self.mess_dropout[k]) # dropout
+            ego_embeddings = tf.nn.dropout(ego_embeddings, 1 - self.mess_dropout[k]) # dropout
             norm_embeddings = tf.math.l2_normalize(ego_embeddings, axis=1) # l2正则化
             all_embeddings += [norm_embeddings]
 
@@ -422,7 +425,7 @@ class NCGCF(object):
 
             # W_mlp * (LeakyReLU(W * (L * E^(k)) + b)) + b_mlp
             mlp_embeddings = tf.matmul(embeddings, self.weights['W_mlp_%d' % k]) + self.weights['b_mlp_%d' % k]
-            # mlp_embeddings = tf.nn.dropout(mlp_embeddings, 1 - self.mess_dropout[k]) # dropout
+            mlp_embeddings = tf.nn.dropout(mlp_embeddings, 1 - self.mess_dropout[k]) # dropout
             all_embeddings += [mlp_embeddings]
 
         # [[eu_0^(1)-eu_0^(2)-...-eu_0^(n_layers)],...,[ei_N^(1)-ei_N^(2)-...-ei_N^(n_layers)]]
@@ -526,8 +529,9 @@ if __name__ == '__main__':
         print('use the mean adjacency matrix')
 
     else:
-        config['norm_adj'] = mean_adj + sp.eye(mean_adj.shape[0]) # 归一化后加单位矩阵
+        config['norm_adj'] = mean_adj + sp.eye(mean_adj.shape[0]) # 归一化后加单位矩阵(自连接)
         print('use the ngcf adjacency matrix')
+
 
     t0 = time()
 
