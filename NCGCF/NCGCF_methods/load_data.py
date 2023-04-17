@@ -96,7 +96,7 @@ class Data(object):
             print('already load adj matrix', adj_mat.shape, time() - t1) # 加载邻接矩阵
 
         except Exception:
-            adj_mat, norm_adj_mat, mean_adj_mat, SecondOrder_adj_mat = self.create_adj_mat() # 创建邻接矩阵
+            adj_mat, norm_adj_mat, mean_adj_mat= self.create_adj_mat() # 创建邻接矩阵
             sp.save_npz(self.path + '/s_adj_mat.npz', adj_mat) # 使用npz格式保存稀疏矩阵文件
             sp.save_npz(self.path + '/s_norm_adj_mat.npz', norm_adj_mat)
             sp.save_npz(self.path + '/s_mean_adj_mat.npz', mean_adj_mat)
