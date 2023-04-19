@@ -169,7 +169,7 @@ class NCGCF(object):
 
         # SN-CCL loss
         self.sn_ccl_loss = tf.constant(0.0, tf.float32, [1])
-        if self.SN_CCL: # 计算消耗过大，默认关闭
+        if self.SN_CCL:
             self.all_u_latent_prototype = sn_ccl_k_means(self.weights['user_embedding'], self.k_user)
             self.all_i_latent_prototype = sn_ccl_k_means(self.weights['item_embedding'], self.k_item)
 
